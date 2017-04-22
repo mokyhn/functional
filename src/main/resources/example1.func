@@ -1,0 +1,2 @@
+succ(X)=n(X) # The successor
+pred((n(X)) = X # This defined the predecessor
