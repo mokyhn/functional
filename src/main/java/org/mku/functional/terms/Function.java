@@ -1,18 +1,15 @@
 package org.mku.functional.terms;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Function implements Term
 {
-    String name;
+    private final String name;
+    private final List<Term> subTerms;
     
-    List<Term> subTerms;
-    
-    public Function(String data, Term... terms)
+    public Function(String name, Term... terms)
     {
-        this.name = data;
+        this.name = name;
         subTerms = new ArrayList<>(Arrays.asList(terms));
     }
 
@@ -22,7 +19,7 @@ public class Function implements Term
         subTerms = terms;
     }
 
-    public String getData()
+    public String getName()
     {
         return name;
     }
@@ -49,5 +46,24 @@ public class Function implements Term
         }
 
         return name + "(" + args +  ")";
+    }
+
+
+    public int getArity()
+    {
+        return subTerms.size();
+    }
+
+
+    @Override
+    public Set<Term> vars()
+    {
+        Set<Term> result = new HashSet<>();
+
+        for (Term t : subTerms)
+        {
+            result.addAll(t.vars());
+        }
+        return result;
     }
 }
