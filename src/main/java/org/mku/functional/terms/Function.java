@@ -15,7 +15,13 @@ public class Function implements Term
         this.name = data;
         subTerms = new ArrayList<>(Arrays.asList(terms));
     }
-    
+
+    public Function(String data, List<Term> terms)
+    {
+        this.name = data;
+        subTerms = terms;
+    }
+
     public String getData()
     {
         return name;
@@ -24,5 +30,24 @@ public class Function implements Term
     public List<Term> getTerms() 
     {
         return subTerms;
+    }
+
+    @Override
+    public String toString()
+    {
+        String args = "";
+        for (Term t : subTerms)
+        {
+            if (args.isEmpty())
+            {
+                args = t.toString();
+            }
+            else
+            {
+                args += "," + t.toString();
+            }
+        }
+
+        return name + "(" + args +  ")";
     }
 }

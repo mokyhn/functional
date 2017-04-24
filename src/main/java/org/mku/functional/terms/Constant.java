@@ -13,4 +13,10 @@ public class Constant implements Term
     {
         return data;
     }
+
+    @Override
+    public String toString()
+    {
+        return data;
+    }
 }

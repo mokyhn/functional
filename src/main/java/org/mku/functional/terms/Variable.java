@@ -13,4 +13,10 @@ public class Variable implements Term
     {
         return name;
     }
+
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }

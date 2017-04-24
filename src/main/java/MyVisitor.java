@@ -3,19 +3,18 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 //http://niels.nu/blog/2015/antlr-is-awesome.html
 
-public class MyVisitor extends ExprBaseListener
+public class MyVisitor extends FunctionalBaseListener
 {
 	@Override
-	public void enterProg(ExprParser.ProgContext ctx)
+	public void enterProg(FunctionalParser.ProgContext ctx)
 	{
 		System.out.println("Visiting PROG " + ctx.toStringTree());
 	}
 
 
-	@Override
-	public void enterExpr(ExprParser.ExprContext ctx)
+	public void enterExpr(FunctionalParser.ProgContext ctx)
 	{
-		System.out.println("Visiting EXPR " + ctx.toStringTree());
+		System.out.println("Visiting PROG " + ctx.toStringTree());
 
 	}
 

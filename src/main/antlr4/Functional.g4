@@ -1,18 +1,22 @@
-grammar Expr;
-prog:	(expr NEWLINE)* ;
-expr:	expr (OP_MULT|OP_DIVIDE) expr
-    |	expr (OP_PLUS|OP_MINUS) expr
-    |	INT
-    |	'(' expr ')'
-    ;
+grammar Functional;
 
-OP_MULT : '*' ;
-OP_DIVIDE : '/' ;
-OP_PLUS : '+' ;
-OP_MINUS : '-' ;
+prog:	(definition NEWLINE)* term ;
 
+definition : term OP_DEFINES term ;
+
+term : CONSTANT
+     | VARIABLE
+     | function
+     ;
+
+function : CONSTANT '(' terms ')' ;
+
+terms :
+      term (',' term)* ;
+
+OP_DEFINES : '->' ;
 
 NEWLINE : [\r\n]+ ;
-INT     : [0-9]+ ;
 CONSTANT : [a-z]+.*? ;
 VARIABLE : [A-Z]+.*? ;
+SPACE   : (' ' | '\t' | '\r' | '\n') {skip();};

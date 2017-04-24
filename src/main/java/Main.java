@@ -1,21 +1,26 @@
 import org.antlr.v4.runtime.*;
+import org.mku.functional.terms.Constant;
+import org.mku.functional.terms.Function;
+import org.mku.functional.terms.Term;
 
-/**
- * Created by mku on 4/18/17.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+
+
 public class Main
 {
 
 	public static void main(String[] args)
 	{
-		ANTLRInputStream in = new ANTLRInputStream("12*(5-6)\n");
-		ExprLexer lexer = new ExprLexer(in);
+		ANTLRInputStream in = new ANTLRInputStream("f(X,Y)->X\nf(a , b)");
+		FunctionalLexer lexer = new FunctionalLexer(in);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		ExprParser parser = new ExprParser(tokens);
+		FunctionalParser parser = new FunctionalParser(tokens);
 
 		parser.addParseListener(new MyVisitor());
 
-		ExprParser.ProgContext progrContext = parser.prog();
+		FunctionalParser.ProgContext progrContext = parser.prog();
 
 		visitProgr(progrContext);
 
@@ -23,14 +28,54 @@ public class Main
 
 	}
 
-	private static void visitProgr(ExprParser.ProgContext progrContext)
+	private static void visitProgr(FunctionalParser.ProgContext progrContext)
 	{
-		if (progrContext.expr() != null) {
+		if (progrContext.definition() != null)
+		{
+
 		}
+		if (progrContext.term() != null)
+		{
+			Term term = visitTerm(progrContext.term());
+			System.out.println("Parsed result: " + term.toString());
+		}
+	}
+
+	private static Term visitTerm(FunctionalParser.TermContext termContext)
+	{
+		if (termContext.CONSTANT() != null)
+		{
+			return new Constant(termContext.CONSTANT().getText());
+		}
+		if (termContext.VARIABLE() != null)
+		{
+			return new Constant(termContext.VARIABLE().getText());
+		}
+		if (termContext.function() != null)
+		{
+			FunctionalParser.TermsContext termsContext = termContext.function().terms();
+			return new Function(termContext.function().CONSTANT().getText(), visitTerms(termsContext));
+		}
+		return null;
+	}
+
+	private static List<Term> visitTerms(FunctionalParser.TermsContext termsContext)
+	{
+		List<Term> result = new ArrayList<>();
+
+		List<FunctionalParser.TermContext> termContextList = termsContext.term();
+
+		for (FunctionalParser.TermContext c : termContextList)
+		{
+			result.add(visitTerm(c));
+		}
+
+		return result;
 	}
 
 	//Something along these lines...
 	/*
+
    * Visits the branches in the expression tree recursively until we hit a leaf.
    */
 	/*
