@@ -14,3 +14,5 @@ OP_MINUS : '-' ;
 
 NEWLINE : [\r\n]+ ;
 INT     : [0-9]+ ;
+CONSTANT : [a-z]+.*? ;
+VARIABLE : [A-Z]+.*? ;
